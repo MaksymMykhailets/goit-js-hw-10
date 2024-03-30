@@ -11,6 +11,13 @@ const minutesEl = document.querySelector("[data-minutes]");
 const secondsEl = document.querySelector("[data-seconds]");
 
 let userSelectedDate = null;
+let timerInterval = null;
+
+if (!datetimePicker.value) {
+    startBtn.disabled = true;
+} else {
+    startBtn.disabled = false;
+}
 
 const options = {
     enableTime: true,
@@ -40,12 +47,17 @@ startBtn.addEventListener("click", handleClick);
 function handleClick() {
     if (!userSelectedDate) return;
   
-    const timerInterval = setInterval(() => {
+    startBtn.disabled = true;
+    datetimePicker.disabled = true;
+  
+    timerInterval = setInterval(() => {
         const currentDate = new Date();
         const difference = userSelectedDate - currentDate;
       
         if (difference <= 0) {
             clearInterval(timerInterval);
+            startBtn.disabled = false;
+            datetimePicker.disabled = false;
             return;
         }
         
